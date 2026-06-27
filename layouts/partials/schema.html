@@ -1,0 +1,189 @@
+{{- /*
+  Структурированная разметка (Schema.org JSON-LD) для всех страниц.
+
+  Подключается из layouts/_default/baseof.html в <head>.
+  Источник данных — frontmatter страницы и hugo.yaml (.Site.Params).
+  Никаких <script type="application/ld+json"> в content/*.md не должно быть:
+  вся разметка живёт здесь, чтобы её можно было менять централизованно.
+
+  Правила добавления нового типа страницы — см. /CLAUDE.md.
+*/ -}}
+
+{{- $orgID    := printf "%s#org" .Site.BaseURL -}}
+{{- $orgRef   := dict "@type" "SportsClub" "@id" $orgID "name" "BJJ74" -}}
+{{- $logoURL  := absURL "images/logo.png" -}}
+{{- $heroURL  := absURL "images/hero-grappling-photo.png" -}}
+
+{{- /* Полная карточка организации (SportsClub) — используется на главной,
+       странице контактов и странице расписания. */ -}}
+{{- $orgFull := dict
+  "@context" "https://schema.org"
+  "@type" "SportsClub"
+  "@id" $orgID
+  "name" "BJJ74"
+  "description" "Секция грепплинга и BJJ No-Gi в Челябинске для взрослых 18+: новичков, женщин и мужчин."
+  "url" .Site.BaseURL
+  "telephone" .Site.Params.phone
+  "image" $heroURL
+  "logo" $logoURL
+  "priceRange" "1000–5000 ₽"
+  "address" (dict
+    "@type" "PostalAddress"
+    "streetAddress" "пос. Западный, Цветной бульвар, 16"
+    "addressLocality" "Челябинск"
+    "addressRegion" "Челябинская область"
+    "addressCountry" "RU"
+  )
+  "geo" (dict
+    "@type" "GeoCoordinates"
+    "latitude" .Site.Params.geo.latitude
+    "longitude" .Site.Params.geo.longitude
+  )
+  "openingHoursSpecification" (slice
+    (dict "@type" "OpeningHoursSpecification" "dayOfWeek" "Thursday" "opens" "19:30" "closes" "21:00")
+    (dict "@type" "OpeningHoursSpecification" "dayOfWeek" "Saturday" "opens" "13:00" "closes" "14:30")
+  )
+  "sameAs" (slice .Site.Params.telegram .Site.Params.vk .Site.Params.reviews.yandex .Site.Params.reviews.twoGis)
+-}}
+
+{{- if .IsHome -}}
+<script type="application/ld+json">{{ $orgFull | jsonify | safeJS }}</script>
+
+{{- else if eq .RelPermalink "/contacts/" -}}
+<script type="application/ld+json">{{ $orgFull | jsonify | safeJS }}</script>
+
+{{- else if eq .RelPermalink "/schedule/" -}}
+<script type="application/ld+json">{{ $orgFull | jsonify | safeJS }}</script>
+
+{{- else if eq .RelPermalink "/trainer/" -}}
+{{- $obj := dict
+  "@context" "https://schema.org"
+  "@type" "Person"
+  "name" "Станислав Мамай"
+  "jobTitle" "Тренер по грепплингу и BJJ No-Gi"
+  "url" .Permalink
+  "worksFor" $orgRef
+-}}
+<script type="application/ld+json">{{ $obj | jsonify | safeJS }}</script>
+
+{{- else if eq .RelPermalink "/prices/" -}}
+{{- $obj := dict
+  "@context" "https://schema.org"
+  "@type" "OfferCatalog"
+  "name" "Цены на тренировки по грепплингу"
+  "url" .Permalink
+  "provider" $orgRef
+  "itemListElement" (slice
+    (dict "@type" "Offer" "name" "Первое (пробное) занятие" "price" "500" "priceCurrency" "RUB" "availability" "https://schema.org/InStock" "url" .Permalink)
+    (dict "@type" "Offer" "name" "Разовое занятие" "price" "1000" "priceCurrency" "RUB" "availability" "https://schema.org/InStock" "url" .Permalink)
+    (dict "@type" "Offer" "name" "Абонемент на 8 занятий" "price" "5000" "priceCurrency" "RUB" "availability" "https://schema.org/InStock" "url" .Permalink)
+  )
+-}}
+<script type="application/ld+json">{{ $obj | jsonify | safeJS }}</script>
+
+{{- else if eq .RelPermalink "/reviews/" -}}
+{{- $obj := dict
+  "@context" "https://schema.org"
+  "@type" "WebPage"
+  "name" .Title
+  "description" .Description
+  "url" .Permalink
+  "about" $orgRef
+  "sameAs" (slice .Site.Params.telegram .Site.Params.vk .Site.Params.reviews.yandex .Site.Params.reviews.twoGis)
+-}}
+<script type="application/ld+json">{{ $obj | jsonify | safeJS }}</script>
+
+{{- else if eq .RelPermalink "/faq/" -}}
+{{- $obj := dict
+  "@context" "https://schema.org"
+  "@type" "FAQPage"
+  "url" .Permalink
+  "mainEntity" (slice
+    (dict "@type" "Question" "name" "Можно ли прийти без опыта?"             "acceptedAnswer" (dict "@type" "Answer" "text" "Да. Большинство взрослых начинает с нуля. На первой тренировке важнее слушать объяснения и не спешить."))
+    (dict "@type" "Question" "name" "Есть ли удары?"                          "acceptedAnswer" (dict "@type" "Answer" "text" "Нет. Грепплинг и BJJ No-Gi — это борьба без ударов."))
+    (dict "@type" "Question" "name" "Подходит ли женщинам?"                   "acceptedAnswer" (dict "@type" "Answer" "text" "Да. Формат подходит женщинам и девушкам, которым нужен контактный спорт без ударных спаррингов."))
+    (dict "@type" "Question" "name" "Можно ли начинать после 35 или 40?"      "acceptedAnswer" (dict "@type" "Answer" "text" "Да. Взрослым ученикам важно тренироваться регулярно и безопасно."))
+  )
+-}}
+<script type="application/ld+json">{{ $obj | jsonify | safeJS }}</script>
+
+{{- else if eq .RelPermalink "/privilegiya/" -}}
+{{- $obj := dict
+  "@context" "https://schema.org"
+  "@type" "Service"
+  "name" .Title
+  "description" .Description
+  "url" .Permalink
+  "serviceType" "Грепплинг No-Gi и BJJ No-Gi"
+  "provider" $orgRef
+  "areaServed" (slice
+    (dict "@type" "Place" "name" "мкрн. Привилегия, Челябинск")
+    (dict "@type" "Place" "name" "Залесье, Челябинск")
+    (dict "@type" "Place" "name" "Вишневая горка, Челябинск")
+    (dict "@type" "Place" "name" "пос. Западный, Челябинск")
+  )
+-}}
+<script type="application/ld+json">{{ $obj | jsonify | safeJS }}</script>
+
+{{- else if .IsPage -}}
+  {{- if or (eq .Section "blog") (eq .Section "pages") (eq .RelPermalink "/first-training/") -}}
+    {{- /* Блог-статьи и информационные материалы: расширенный Article. */ -}}
+    {{- $articleImage := $heroURL -}}
+    {{- with .Params.cover -}}
+      {{- $articleImage = . | absURL -}}
+    {{- end -}}
+    {{- $obj := dict
+      "@context" "https://schema.org"
+      "@type" "Article"
+      "headline" .Title
+      "description" .Description
+      "image" $articleImage
+      "datePublished" (.Date.Format "2006-01-02T15:04:05Z07:00")
+      "dateModified" (.Lastmod.Format "2006-01-02T15:04:05Z07:00")
+      "inLanguage" "ru-RU"
+      "author" (dict "@type" "Organization" "name" "BJJ74" "@id" $orgID)
+      "publisher" (dict "@type" "Organization" "name" "BJJ74" "@id" $orgID "logo" (dict "@type" "ImageObject" "url" $logoURL))
+      "mainEntityOfPage" (dict "@type" "WebPage" "@id" .Permalink)
+    -}}
+    {{- with .Params.video -}}
+      {{- $video := dict
+        "@type" "VideoObject"
+        "name" .title
+        "description" $.Description
+        "thumbnailUrl" (slice (.thumbnail | absURL))
+        "uploadDate" .upload_date
+        "duration" .duration
+        "embedUrl" (printf "https://www.youtube.com/embed/%s" .id)
+        "contentUrl" .url
+      -}}
+      {{- $obj = merge $obj (dict "video" $video) -}}
+    {{- end -}}
+<script type="application/ld+json">{{ $obj | jsonify | safeJS }}</script>
+  {{- else -}}
+    {{- /* Landing-страницы по услуге/аудитории/гео: Service. */ -}}
+    {{- $obj := dict
+      "@context" "https://schema.org"
+      "@type" "Service"
+      "name" .Title
+      "description" .Description
+      "url" .Permalink
+      "serviceType" "Грепплинг No-Gi и BJJ No-Gi"
+      "provider" $orgRef
+      "areaServed" (dict "@type" "City" "name" "Челябинск")
+    -}}
+<script type="application/ld+json">{{ $obj | jsonify | safeJS }}</script>
+  {{- end -}}
+
+{{- else -}}
+  {{- /* Любые list-страницы (например, /blog/): WebPage. */ -}}
+  {{- $obj := dict
+    "@context" "https://schema.org"
+    "@type" "WebPage"
+    "name" .Title
+    "description" .Description
+    "url" .Permalink
+    "isPartOf" (dict "@type" "WebSite" "name" .Site.Title "url" .Site.BaseURL)
+    "about" $orgRef
+  -}}
+<script type="application/ld+json">{{ $obj | jsonify | safeJS }}</script>
+{{- end -}}
