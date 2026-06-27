@@ -1,0 +1,14 @@
+{{- $id := .Get "id" -}}
+{{- $title := .Get "title" | default "Видео YouTube" -}}
+{{- $url := .Get "url" | default (printf "https://www.youtube.com/watch?v=%s" $id) -}}
+<figure class="video-embed">
+  <div class="video-frame">
+    <iframe
+      src="https://www.youtube.com/embed/{{ $id }}"
+      title="{{ $title }}"
+      loading="lazy"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen></iframe>
+  </div>
+  <figcaption><a href="{{ $url }}" rel="noopener" target="_blank">Открыть оригинальное видео на YouTube</a></figcaption>
+</figure>
