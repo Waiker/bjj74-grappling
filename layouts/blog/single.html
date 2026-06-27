@@ -26,34 +26,15 @@
       </figure>
     {{ end }}
   </div>
-  <div class="article-grid">
-    <div class="article-content">{{ .Content }}</div>
-    <aside class="article-aside">
-      <div class="aside-card">
-        <strong>Тренировки для новичков</strong>
-        <p>Группы для взрослых с нуля: база, защиты, контроли, лёгкие схватки. Прийти можно в любой момент.</p>
-        <a class="button accent" href="/novichkam/">Подробнее</a>
-      </div>
-      <div class="aside-card muted">
-        <strong>На пробную</strong>
-        <p>Без обязательств. Можно прийти посмотреть, можно — попробовать на ковре.</p>
-        <a class="button secondary" href="/contacts/">Записаться</a>
-      </div>
-      <div class="aside-card muted">
-        <strong>Адрес</strong>
-        <p>Академия спорта, пос. Западный, Цветной бульвар, 16 — район Привилегия.</p>
-      </div>
-    </aside>
+  <div class="article-body">
+    {{ .Content }}
   </div>
 
-  {{- /* === «Читайте также»: 3 поста — приоритет общая рубрика, потом общие теги === */ -}}
   {{- $current := . -}}
   {{- $myRubric := .Params.rubric | default "" -}}
   {{- $myTags := .Params.tags | default slice -}}
   {{- $allBlog := where .Site.RegularPages "Section" "blog" -}}
   {{- $others := where $allBlog "Permalink" "ne" .Permalink -}}
-
-  {{- /* Скоринг: +3 за совпадение рубрики, +1 за каждый общий тег. */ -}}
   {{- $scored := slice -}}
   {{- range $others -}}
     {{- $score := 0 -}}
@@ -70,8 +51,6 @@
     {{- end -}}
   {{- end -}}
   {{- $scored = sort $scored "score" "desc" -}}
-
-  {{- /* Если совпадений мало — добиваем свежими. */ -}}
   {{- $relatedPages := slice -}}
   {{- range first 3 $scored -}}
     {{- $relatedPages = $relatedPages | append .page -}}
@@ -98,6 +77,5 @@
     </div>
   </section>
   {{- end }}
-
 </article>
 {{ end }}
