@@ -1,0 +1,5 @@
+{{- /* factoid — sidebar-цитата с крупной цифрой. number + опц. unit (рядом, чтобы 0 не читался как «О»). */ -}}
+<aside class="factoid">
+  {{ with .Get "number" }}<strong class="factoid-number">{{ . }}{{ with $.Get "unit" }}<span class="factoid-unit">{{ . }}</span>{{ end }}</strong>{{ end }}
+  <div class="factoid-text">{{ .Inner | markdownify }}</div>
+</aside>
