@@ -1,0 +1,367 @@
+{{ define "main" }}
+{{- /* Featured matches — replace id values with verified YouTube IDs */ -}}
+{{- $menVideos := slice
+    (dict "id" "HkwFwGYtqfk" "title" "Каде Руотоло vs Эндрю Таккетт — «величайший матч»" "tag" "CJI")
+    (dict "id" "5UwQJe9ljDs" "title" "Каде Руотоло vs Леви Джонс-Лири — финал CJI" "tag" "CJI · финал")
+    (dict "id" "bdSc-WgEnyk" "title" "Тай Руотоло vs Джейсон Нолф" "tag" "CJI")
+-}}
+{{- $womenVideos := slice
+    (dict "id" "gF4eJEPNAu8" "title" "Ффион Дэвис vs Маккензи Дёрн — суперфайт" "tag" "CJI")
+    (dict "id" "A7lNCSWyUnQ" "title" "Хелена Кревар vs Сара Гальвао — финал за $100 000" "tag" "CJI 2 · финал")
+    (dict "id" "jbalVAUFx2Y" "title" "Хелена Кревар vs Элизабет Клэй — титул WNO" "tag" "WNO")
+-}}
+{{- $articles := slice
+    (dict "url" "/blog/what-is-grappling/" "img" "/images/sparring-bw.jpg" "kicker" "С чего начать" "title" "Что такое грэпплинг — простыми словами" "text" "Короткое объяснение для тех, кто никогда не занимался единоборствами.")
+    (dict "url" "/blog/celebrity-women-bjj/" "img" "/images/blog/celebrity-women-bjj/cover.webp" "kicker" "Вдохновение" "title" "Звёзды, которые тренируют джиу-джитсу" "text" "Деми Ловато, Жизель Бюндхен, Скарлетт Йоханссон и другие — зачем им борьба.")
+    (dict "url" "/blog/women-grappling-stars/" "img" "/images/blog/women-grappling-stars/cover.webp" "kicker" "Лица грэпплинга" "title" "Чемпионки женского грэпплинга" "text" "Шесть спортсменок, на которых равняется весь мир борьбы без ударов.")
+    (dict "url" "/blog/celebrity-men-grappling/" "img" "/images/blog/celebrity-men-grappling/cover.webp" "kicker" "Вдохновение" "title" "Знаменитости-мужчины в грэпплинге" "text" "Киану Ривз, Том Харди, Чак Норрис: многие начали уже взрослыми.")
+    (dict "url" "/blog/grappling-for-women-how-to-start/" "img" "/images/blog/grappling-for-women-how-to-start/cover.jpg" "kicker" "Для девушек" "title" "Грэпплинг для девушек: как начать без страха" "text" "Честный разбор главных сомнений и того, чего бояться не стоит.")
+    (dict "url" "/novichkam/" "img" "/images/intro/gym.webp" "kicker" "Первый шаг" "title" "Новичку: как проходит первая тренировка" "text" "По шагам — от разминки до первой лёгкой работы в паре.")
+-}}
+
+<div class="lp">
+<style>
+.lp{--ink:#0d0e11;--bg2:#15171c;--red:#e0221b;--gold:#b8923f;--gold2:#caa25a;--cream:#f7f4ee;--muted:#6b7280;--line:#e6e1d8;line-height:1.5;color:var(--ink);font-family:"Inter","Inter Tight",system-ui,sans-serif;}
+.lp *{box-sizing:border-box;}
+.lp .wrap{max-width:1120px;margin:0 auto;padding:0 20px;}
+.lp h2{font-family:"Inter Tight",Inter,sans-serif;font-weight:900;letter-spacing:-.5px;line-height:1.05;font-size:clamp(26px,4vw,40px);margin:0 0 10px;}
+.lp h3{font-family:"Inter Tight",Inter,sans-serif;font-weight:800;margin:0;}
+.lp .eyebrow{font-weight:800;text-transform:uppercase;letter-spacing:2px;font-size:13px;color:var(--red);margin:0 0 10px;}
+.lp .eyebrow::before{content:none;display:none;}
+/* AUDIENCE (women / men) */
+.lp .aud .agr{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:26px;}
+.lp .audcard{position:relative;border-radius:18px;overflow:hidden;border:1px solid var(--line);color:#fff;min-height:300px;display:flex;flex-direction:column;justify-content:flex-end;}
+.lp .audcard img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;}
+.lp .audcard .ov{position:absolute;inset:0;z-index:1;}
+.lp .audcard.women .ov{background:linear-gradient(180deg,rgba(13,14,17,.15) 0%,rgba(120,20,70,.55) 55%,rgba(13,14,17,.9) 100%);}
+.lp .audcard.men .ov{background:linear-gradient(180deg,rgba(13,14,17,.15) 0%,rgba(20,40,90,.5) 55%,rgba(13,14,17,.9) 100%);}
+.lp .audcard .c{position:relative;z-index:2;padding:24px;}
+.lp .audcard .tag{display:inline-block;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:1px;background:var(--red);color:#fff;border-radius:999px;padding:5px 12px;margin-bottom:10px;}
+.lp .audcard.men .tag{background:#2f6fe0;}
+.lp .audcard h3{font-family:"Inter Tight";font-weight:900;font-size:24px;margin:0 0 8px;color:#fff;}
+.lp .audcard ul{margin:0 0 16px;padding:0;list-style:none;}
+.lp .audcard li{font-size:14.5px;color:#eef0f2;padding-left:20px;position:relative;margin:5px 0;}
+.lp .audcard li::before{content:"✓";position:absolute;left:0;color:var(--gold2);font-weight:900;}
+.lp .audcard .btn{font-size:15px;padding:12px 20px;}
+.lp .lead{font-size:clamp(16px,2vw,19px);color:#3a3f47;max-width:62ch;}
+.lp section{padding:64px 0;}
+.lp .btn{display:inline-flex;align-items:center;gap:8px;font-weight:800;text-decoration:none;border-radius:999px;padding:15px 26px;font-size:16px;transition:transform .12s ease;}
+.lp .btn:active{transform:scale(.98);}
+.lp .btn-red{background:var(--red);color:#fff;box-shadow:0 8px 24px rgba(224,34,27,.35);}
+.lp .btn-ghost{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.4);}
+.lp .btn-dark{background:var(--ink);color:#fff;}
+.lp .btn-tg{background:#229ED9;color:#fff;}
+
+/* HERO */
+.lp .lphero{position:relative;background:radial-gradient(120% 120% at 80% 0%,#1c1f26 0%,#0b0c0f 60%);color:#fff;padding:72px 0 64px;overflow:hidden;}
+.lp .lphero .wrap{display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:center;}
+.lp .lphero .eyebrow{color:var(--gold2);}
+.lp .lphero h1{font-family:"Inter Tight",sans-serif;font-weight:900;font-size:clamp(34px,5.6vw,60px);line-height:1.0;letter-spacing:-1px;margin:0 0 18px;color:#fff;}
+.lp .lphero h1 .r{color:var(--red);}
+.lp .lphero p.sub{font-size:clamp(16px,2.2vw,20px);color:#cfd3d8;max-width:48ch;margin:0 0 26px;}
+.lp .lphero .cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:22px;}
+.lp .lphero .chips{display:flex;flex-wrap:wrap;gap:10px;}
+.lp .chip{font-size:13px;font-weight:700;color:#e9e6df;border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:7px 14px;}
+.lp .chip b{color:var(--gold2);}
+.lp .hero-img{position:relative;border-radius:18px;overflow:hidden;aspect-ratio:4/3;box-shadow:0 30px 60px rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.08);}
+.lp .hero-img img{width:100%;height:100%;object-fit:cover;display:block;}
+.lp .hero-img .badge{position:absolute;left:14px;bottom:14px;background:rgba(13,14,17,.78);backdrop-filter:blur(4px);border:1px solid rgba(255,255,255,.15);border-radius:12px;padding:8px 14px;font-size:12px;font-weight:700;color:#fff;}
+
+/* TRIAD */
+.lp .triad{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:8px;}
+.lp .triad .t{background:var(--cream);border:1px solid var(--line);border-radius:14px;padding:22px;}
+.lp .triad .t .n{font-family:"Inter Tight";font-weight:900;font-size:30px;color:var(--red);}
+.lp .triad .t h3{font-size:18px;margin:6px 0 6px;}
+.lp .triad .t p{margin:0;color:#4b5159;font-size:15px;}
+
+/* BENEFITS */
+.lp .benefits{background:var(--cream);}
+.lp .bgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:26px;}
+.lp .bcard{background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px;}
+.lp .bcard .ic{font-size:26px;}
+.lp .bcard h3{font-size:18px;margin:12px 0 8px;}
+.lp .bcard p{margin:0;color:#4b5159;font-size:15px;}
+
+/* SOCIAL PROOF */
+.lp .proof{background:var(--ink);color:#fff;}
+.lp .proof .wrap{display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:center;}
+.lp .proof img{width:100%;border-radius:16px;display:block;border:1px solid rgba(255,255,255,.1);}
+.lp .proof h2{color:#fff;}
+.lp .proof .big{font-family:"Inter Tight";font-weight:900;font-size:54px;color:var(--gold2);line-height:1;}
+.lp .proof p{color:#cfd3d8;font-size:17px;}
+
+/* VIDEOS */
+.lp .vcat{font-family:"Inter Tight";font-weight:800;font-size:14px;text-transform:uppercase;letter-spacing:1.5px;color:var(--red);margin:30px 0 14px;display:flex;align-items:center;gap:10px;}
+.lp .vcat::after{content:"";flex:1;height:1px;background:var(--line);}
+.lp .vgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.lp .vid{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fff;}
+.lp .vid .fr{position:relative;aspect-ratio:16/9;background:#0d0e11;}
+.lp .vid iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
+.lp .vid .cap{padding:12px 14px;font-size:14px;font-weight:700;}
+.lp .vid .cap span{display:block;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--red);margin-bottom:3px;}
+
+/* ARTICLES */
+.lp .arts{background:var(--cream);}
+.lp .agrid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:26px;}
+.lp .acard{display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;text-decoration:none;color:inherit;transition:transform .14s ease,box-shadow .14s ease;}
+.lp .acard:hover{transform:translateY(-4px);box-shadow:0 16px 36px rgba(0,0,0,.1);}
+.lp .acard .ph{aspect-ratio:16/9;overflow:hidden;}
+.lp .acard .ph img{width:100%;height:100%;object-fit:cover;display:block;}
+.lp .acard .body{padding:18px;}
+.lp .acard .k{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--red);}
+.lp .acard h3{font-size:18px;margin:6px 0 8px;line-height:1.2;}
+.lp .acard p{margin:0;color:#4b5159;font-size:14px;}
+
+/* STEPS */
+.lp .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:26px;}
+.lp .step{background:var(--cream);border:1px solid var(--line);border-radius:16px;padding:24px;position:relative;}
+.lp .step .num{font-family:"Inter Tight";font-weight:900;font-size:40px;color:var(--gold);line-height:1;}
+.lp .step h3{font-size:18px;margin:8px 0 8px;}
+.lp .step p{margin:0;color:#4b5159;font-size:15px;}
+
+/* PRACTICAL */
+.lp .info{background:var(--ink);color:#fff;}
+.lp .igrid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:26px;}
+.lp .icard{background:var(--bg2);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:20px;}
+.lp .icard .k{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--gold2);margin-bottom:8px;}
+.lp .icard .v{font-size:15px;color:#e9ecef;}
+.lp .icard .v b{color:#fff;}
+.lp .price-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;}
+.lp .ptag{background:rgba(224,34,27,.14);border:1px solid rgba(224,34,27,.4);color:#ffd9d6;border-radius:10px;padding:8px 12px;font-size:13px;font-weight:700;}
+
+/* SOCIAL + FINAL */
+.lp .social{text-align:center;}
+.lp .slinks{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:22px;}
+.lp .slink{display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-weight:800;border-radius:12px;padding:14px 20px;border:1px solid var(--line);color:var(--ink);background:#fff;}
+.lp .slink.tg{background:#229ED9;color:#fff;border-color:#229ED9;}
+.lp .slink.vk{background:#0077FF;color:#fff;border-color:#0077FF;}
+.lp .final{background:linear-gradient(120deg,#e0221b,#a8170f);color:#fff;text-align:center;border-radius:0;}
+.lp .final h2{color:#fff;font-size:clamp(28px,4.5vw,44px);}
+.lp .final p{color:#ffe3e1;font-size:18px;max-width:60ch;margin:0 auto 26px;}
+.lp .final .btn-white{background:#fff;color:var(--red);}
+.lp .final .phone{display:block;margin-top:18px;font-family:"Inter Tight";font-weight:900;font-size:26px;color:#fff;text-decoration:none;}
+
+@media(max-width:860px){
+  .lp .lphero .wrap,.lp .proof .wrap{grid-template-columns:1fr;}
+  .lp .hero-img{order:-1;aspect-ratio:16/10;}
+  .lp .triad,.lp .bgrid,.lp .vgrid,.lp .agrid,.lp .steps{grid-template-columns:1fr;}
+  .lp .igrid{grid-template-columns:1fr 1fr;}
+  .lp section{padding:48px 0;}
+}
+</style>
+
+<!-- ===================== HERO ===================== -->
+<section class="lphero">
+  <div class="wrap">
+    <div>
+      <p class="eyebrow">Грэпплинг Привилегия · Челябинск · 18+</p>
+      <h1>Влюбись в <span class="r">грэпплинг</span> — спорт, который меняет тело и голову</h1>
+      <p class="sub">Борьба без ударов по голове. Умный фитнес, реальная самооборона и спокойствие под давлением — для мужчин и женщин, с нуля. Рядом с мкрн. Привилегия.</p>
+      <div class="cta-row">
+        <a class="btn btn-red" data-goal="intro_trial" href="#start">Записаться на пробное — 500 ₽</a>
+        <a class="btn btn-ghost" href="https://t.me/tym83" rel="noopener" target="_blank">Написать в Telegram</a>
+      </div>
+      <div class="chips">
+        <span class="chip"><b>0</b> ударов в голову</span>
+        <span class="chip">Группы <b>18+</b>, м/ж</span>
+        <span class="chip">Старт <b>с нуля</b></span>
+        <span class="chip">Первое занятие <b>−50%</b></span>
+      </div>
+    </div>
+    <figure class="hero-img" style="margin:0">
+      <img src="/images/intro/hero.webp" alt="Поединок по грэпплингу на турнире — борьба без ударов">
+      <figcaption class="badge">Грэпплинг = борьба контролем, а не ударами</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===================== WHAT / TRIAD ===================== -->
+<section>
+  <div class="wrap">
+    <p class="eyebrow">Что это вообще такое</p>
+    <h2>Три в одном: умная борьба, фитнес и искусство</h2>
+    <p class="lead">Грэпплинг — это борьба без ударов: цель не нокаут, а контроль. Перевести партнёра на ковёр, занять выгодную позицию и провести приём, после которого он сдаётся. Побеждает не самый сильный, а тот, кто лучше понимает рычаги и вес тела. Поэтому его зовут «шахматами на татами».</p>
+    <div class="triad">
+      <div class="t"><div class="n">01</div><h3>Умный фитнес</h3><p>Всё тело, кардио, сила хвата, растяжка и мобильность — без однообразной «качалки».</p></div>
+      <div class="t"><div class="n">02</div><h3>Самооборона</h3><p>Что делать, когда тебя схватили или прижали. Самый практичный навык — без обмена ударами.</p></div>
+      <div class="t"><div class="n">03</div><h3>Спокойствие</h3><p>На ковре невозможно думать о работе. Лучший «выключатель» стресса и активная медитация.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== BENEFITS ===================== -->
+<section class="benefits">
+  <div class="wrap">
+    <p class="eyebrow">Почему это затягивает</p>
+    <h2>Что вы получите уже в первые недели</h2>
+    <div class="bgrid">
+      <div class="bcard"><div class="ic">🧠</div><h3>Голова отдыхает</h3><p>Полная вовлечённость вместо прокручивания проблем. Час пролетает незаметно.</p></div>
+      <div class="bcard"><div class="ic">💪</div><h3>Функциональное тело</h3><p>Спина, корпус, хват, выносливость и гибкость — нарабатываются прямо на тренировках.</p></div>
+      <div class="bcard"><div class="ic">🛡️</div><h3>Реальная защита</h3><p>Большинство конфликтов уходит в захват и на землю. Здесь вы учитесь именно этому.</p></div>
+      <div class="bcard"><div class="ic">🥋</div><h3>Без ударов в голову</h3><p>Никаких сотрясений и синяков на лице. Контактный спорт, в который не страшно прийти.</p></div>
+      <div class="bcard"><div class="ic">📈</div><h3>Видимый прогресс</h3><p>Уже через несколько занятий перестаёшь паниковать на полу и понимаешь, что делать.</p></div>
+      <div class="bcard"><div class="ic">🤝</div><h3>Взрослая среда</h3><p>Без эго и «дедовщины». Партнёров подбирают по комплекции и опыту.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== AUDIENCE (women / men) ===================== -->
+<section class="aud">
+  <div class="wrap">
+    <p class="eyebrow">Это для вас</p>
+    <h2>Грэпплинг — и для женщин, и для мужчин</h2>
+    <p class="lead">Главное правило грэпплинга — техника и рычаг важнее силы. Поэтому он одинаково хорошо подходит и мужчинам, и женщинам. Выберите свой путь:</p>
+    <div class="agr">
+
+      <div class="audcard women">
+        <img src="/images/grappling-for-women/cover.jpg" alt="Грэпплинг для женщин в Челябинске">
+        <div class="ov"></div>
+        <div class="c">
+          <span class="tag">Женщинам — да, это для вас</span>
+          <h3>Женский грэпплинг</h3>
+          <ul>
+            <li>Самооборона: что делать, когда схватили или прижали</li>
+            <li>Фигура, тонус и сильное тело без «качалки»</li>
+            <li>Без агрессии и эго, спокойный темп, мягкий вход с нуля</li>
+            <li>Партнёров подбирает тренер — по комплекции и опыту</li>
+          </ul>
+          <a class="btn btn-red" data-goal="intro_women" href="/grappling-for-women/">Подробнее для женщин →</a>
+        </div>
+      </div>
+
+      <div class="audcard men">
+        <img src="/images/grappling-for-men/cover.jpg" alt="Грэпплинг для мужчин в Челябинске">
+        <div class="ov"></div>
+        <div class="c">
+          <span class="tag">Мужчинам</span>
+          <h3>Мужской грэпплинг 18+</h3>
+          <ul>
+            <li>Честная нагрузка и контакт — без ударов по голове</li>
+            <li>Перезагрузка головы после рабочего дня</li>
+            <li>Начать можно с нуля и после 40 лет</li>
+            <li>Сила, выносливость, характер и реальный навык</li>
+          </ul>
+          <a class="btn btn-dark" data-goal="intro_men" href="/grappling-for-men-35-plus/">Подробнее для мужчин →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SOCIAL PROOF ===================== -->
+<section class="proof">
+  <div class="wrap">
+    <img src="/images/intro/comp.webp" alt="Наши ученики на турнире RCC Джиу-джитсу Урал с медалями">
+    <div>
+      <p class="eyebrow" style="color:var(--gold2)">С нуля — до медалей</p>
+      <div class="big">2&nbsp;раза в неделю</div>
+      <p>Достаточно, чтобы пошёл прогресс. Наши ученики приходят без всякого опыта — и уже выступают на турнирах по джиу-джитсу и грэпплингу, привозя медали. В грэпплинге результат виден быстро, потому что вы решаете живую задачу, а не «домучиваете подход».</p>
+      <a class="btn btn-red" data-goal="intro_trial" href="#start">Начать свой путь</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== VIDEOS ===================== -->
+<section>
+  <div class="wrap">
+    <p class="eyebrow">Посмотрите, как это красиво</p>
+    <h2>Лучшие схватки грэпплинга</h2>
+    <p class="lead">Грэпплинг невозможно разлюбить, когда увидишь его на высшем уровне — это шахматы в движении.</p>
+
+    <div class="vcat">Мужской грэпплинг</div>
+    <div class="vgrid">
+      {{- range $menVideos }}
+      <div class="vid">
+        <div class="fr">{{ if .id }}<iframe src="https://www.youtube.com/embed/{{ .id }}" title="{{ .title }}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>{{ end }}</div>
+        <div class="cap"><span>{{ .tag }}</span>{{ .title }}</div>
+      </div>
+      {{- end }}
+    </div>
+
+    <div class="vcat">Женский грэпплинг</div>
+    <div class="vgrid">
+      {{- range $womenVideos }}
+      <div class="vid">
+        <div class="fr">{{ if .id }}<iframe src="https://www.youtube.com/embed/{{ .id }}" title="{{ .title }}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>{{ end }}</div>
+        <div class="cap"><span>{{ .tag }}</span>{{ .title }}</div>
+      </div>
+      {{- end }}
+    </div>
+  </div>
+</section>
+
+<!-- ===================== ARTICLES ===================== -->
+<section class="arts">
+  <div class="wrap">
+    <p class="eyebrow">Погрузитесь глубже</p>
+    <h2>Истории и гайды, с которых стоит начать</h2>
+    <div class="agrid">
+      {{- range $articles }}
+      <a class="acard" href="{{ .url }}">
+        <div class="ph"><img src="{{ .img }}" alt="{{ .title }}" loading="lazy"></div>
+        <div class="body">
+          <div class="k">{{ .kicker }}</div>
+          <h3>{{ .title }}</h3>
+          <p>{{ .text }}</p>
+        </div>
+      </a>
+      {{- end }}
+    </div>
+  </div>
+</section>
+
+<!-- ===================== HOW TO START ===================== -->
+<section id="start">
+  <div class="wrap">
+    <p class="eyebrow">Это проще, чем кажется</p>
+    <h2>Как начать за 3 шага</h2>
+    <div class="steps">
+      <div class="step"><div class="num">1</div><h3>Напишите нам</h3><p>В <a href="https://t.me/tym83" rel="noopener" target="_blank" style="color:var(--red);font-weight:700">Telegram</a> или по телефону +7 999 587-09-24. Подскажем ближайшую тренировку для новичков и ответим на вопросы.</p></div>
+      <div class="step"><div class="num">2</div><h3>Придите попробовать</h3><p>Первое занятие — 500 ₽ (−50%). Нужны только футболка и шорты без молний и карманов. Спарринга с первой минуты не будет.</p></div>
+      <div class="step"><div class="num">3</div><h3>Влюбитесь и оставайтесь</h3><p>2 тренировки в неделю — и через пару месяцев вы не узнаете ни тело, ни голову. Абонемент на 8 занятий — 5000 ₽.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PRACTICAL INFO ===================== -->
+<section class="info">
+  <div class="wrap">
+    <p class="eyebrow" style="color:var(--gold2)">Где и когда</p>
+    <h2 style="color:#fff">Практика</h2>
+    <div class="igrid">
+      <div class="icard"><div class="k">Расписание</div><div class="v"><b>Чт 19:30 · Сб 13:00</b><br>тренировка 1,5 часа</div></div>
+      <div class="icard"><div class="k">Адрес</div><div class="v"><b>Цветной бульвар, 16</b><br>Академия спорта, пос. Западный — рядом с Привилегией. Бесплатная парковка.</div></div>
+      <div class="icard"><div class="k">Тренер</div><div class="v"><b>Станислав Мамай</b><br>боевое самбо и грэпплинг, ведёт новичков безопасно и без агрессии.</div></div>
+      <div class="icard"><div class="k">Цены</div><div class="v price-row"><span class="ptag">Пробное 500 ₽</span><span class="ptag">Разовое 1000 ₽</span><span class="ptag">Абонемент 8 = 5000 ₽</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SOCIAL ===================== -->
+<section class="social">
+  <div class="wrap">
+    <p class="eyebrow">Следите за нами</p>
+    <h2>Подпишитесь и будьте в курсе</h2>
+    <p class="lead" style="margin:0 auto;">Анонсы тренировок, разборы, истории учеников и атмосфера клуба — в наших каналах.</p>
+    <div class="slinks">
+      <a class="slink tg" href="https://t.me/bjj74ru" rel="noopener" target="_blank">Telegram — t.me/bjj74ru</a>
+      <a class="slink vk" href="https://vk.com/bjj74ru" rel="noopener" target="_blank">ВКонтакте — vk.com/bjj74ru</a>
+      <a class="slink" href="/">Сайт — bjj74.ru</a>
+      <a class="slink" href="tel:+79995870924">+7 999 587-09-24</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FINAL CTA ===================== -->
+<section class="final">
+  <div class="wrap">
+    <h2>Первый шаг — самый трудный. Сделайте его сегодня</h2>
+    <p>Приходите на пробную тренировку в BJJ74 рядом с мкрн. Привилегия. Без опыта, без формы спортсмена, без давления — просто попробуйте, и поймёте, ваше это или нет.</p>
+    <a class="btn btn-white" href="https://t.me/tym83" rel="noopener" target="_blank">Записаться в Telegram</a>
+    <a class="phone" href="tel:+79995870924">+7 999 587-09-24</a>
+  </div>
+</section>
+
+</div>
+{{ end }}
