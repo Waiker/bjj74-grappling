@@ -1,24 +1,583 @@
 {{ define "main" }}
-<div class="home-content">
-  {{ .Content }}
+<style>
+  /* ── Home page only ── */
+  body { background: #0a0a0a; }
+  #main { padding: 0; }
+
+  /* Hide default header on home */
+  body:has(.home-hero) header { display: none; }
+
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700;900&display=swap');
+
+  /* ── Variables ── */
+  :root {
+    --gold:      #C9A84C;
+    --gold-lite: #e0bc5e;
+    --dark:      #0a0a0a;
+    --dark2:     #0e0e0e;
+    --dark3:     #141414;
+    --white:     #ffffff;
+    --muted:     rgba(255,255,255,0.45);
+    --subtle:    rgba(255,255,255,0.22);
+  }
+
+  /* ── HERO ── */
+  .home-hero {
+    position: relative;
+    width: 100%;
+    height: 100svh;
+    min-height: 560px;
+    overflow: hidden;
+    font-family: 'Montserrat', sans-serif;
+  }
+
+  /* Video background */
+  .home-hero__video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    z-index: 0;
+  }
+  .home-hero__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.58);
+    z-index: 1;
+  }
+
+  /* Nav */
+  .home-nav {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 40px;
+    z-index: 10;
+  }
+  .home-nav__logo {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    color: var(--gold);
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+  .home-nav__burger {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 6px;
+    background: none;
+    border: none;
+  }
+  .home-nav__burger span {
+    display: block;
+    width: 22px;
+    height: 1px;
+    background: rgba(255,255,255,0.7);
+    transition: background 0.2s;
+  }
+  .home-nav__burger:hover span { background: var(--gold); }
+
+  /* Burger menu overlay */
+  .home-menu {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.96);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 32px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    font-family: 'Montserrat', sans-serif;
+  }
+  .home-menu.is-open {
+    opacity: 1;
+    pointer-events: all;
+  }
+  .home-menu__close {
+    position: absolute;
+    top: 24px; right: 40px;
+    font-size: 28px;
+    color: var(--muted);
+    cursor: pointer;
+    background: none;
+    border: none;
+    line-height: 1;
+  }
+  .home-menu__close:hover { color: var(--gold); }
+  .home-menu a {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .home-menu a:hover { color: var(--gold); }
+
+  /* Hero content */
+  .home-hero__content {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    z-index: 5;
+    padding: 0 24px;
+  }
+  .home-hero__eyebrow {
+    font-size: 10px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+  }
+  .home-hero__line {
+    width: 36px;
+    height: 1px;
+    background: var(--gold);
+    margin: 0 auto 20px;
+  }
+  .home-hero__title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: clamp(42px, 8vw, 72px);
+    font-weight: 900;
+    line-height: 1.0;
+    letter-spacing: -1px;
+    text-transform: uppercase;
+    color: var(--white);
+    margin: 0 0 10px;
+  }
+  .home-hero__title span { color: var(--gold); }
+  .home-hero__sub {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 40px;
+    font-weight: 300;
+  }
+  .home-hero__cta {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    background: var(--gold);
+    color: #000;
+    border: none;
+    padding: 17px 44px;
+    cursor: pointer;
+    border-radius: 2px;
+    text-decoration: none;
+    transition: background 0.2s;
+    display: inline-block;
+  }
+  .home-hero__cta:hover { background: var(--gold-lite); color: #000; }
+
+  /* Bottom strip */
+  .home-hero__strip {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 40px;
+    z-index: 10;
+    border-top: 1px solid rgba(201,168,76,0.12);
+    font-family: 'Montserrat', sans-serif;
+  }
+  .home-hero__strip-loc,
+  .home-hero__strip-soc a {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--subtle);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .home-hero__strip-soc { display: flex; gap: 20px; }
+  .home-hero__strip-soc a:hover { color: var(--gold); }
+  .home-hero__strip-live {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--subtle);
+    font-family: 'Montserrat', sans-serif;
+  }
+  .home-hero__strip-live-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--gold);
+  }
+
+  /* Scroll hint */
+  .home-scroll-hint {
+    position: absolute;
+    bottom: 56px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    z-index: 10;
+  }
+  .home-scroll-hint__text {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(201,168,76,0.4);
+  }
+  .home-scroll-hint__line {
+    width: 1px;
+    height: 28px;
+    background: linear-gradient(to bottom, rgba(201,168,76,0.5), transparent);
+  }
+
+  /* ── MODAL ── */
+  .home-modal-bg {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    font-family: 'Montserrat', sans-serif;
+  }
+  .home-modal-bg.is-open {
+    opacity: 1;
+    pointer-events: all;
+  }
+  .home-modal {
+    background: #111;
+    border: 1px solid rgba(201,168,76,0.2);
+    padding: 40px;
+    width: min(460px, 90vw);
+    border-radius: 3px;
+    position: relative;
+  }
+  .home-modal__close {
+    position: absolute;
+    top: 16px; right: 20px;
+    font-size: 22px;
+    color: var(--muted);
+    cursor: pointer;
+    background: none;
+    border: none;
+    line-height: 1;
+  }
+  .home-modal__close:hover { color: var(--gold); }
+  .home-modal__eyebrow {
+    font-size: 9px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+  .home-modal__title {
+    font-size: 20px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--white);
+    margin: 0 0 24px;
+  }
+  .home-modal__form { display: flex; flex-direction: column; gap: 12px; }
+  .home-modal__input {
+    background: #1a1a1a;
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--white);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    padding: 13px 16px;
+    border-radius: 2px;
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .home-modal__input:focus { border-color: var(--gold); }
+  .home-modal__input::placeholder { color: rgba(255,255,255,0.25); }
+  .home-modal__submit {
+    background: var(--gold);
+    color: #000;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    border: none;
+    padding: 16px;
+    cursor: pointer;
+    border-radius: 2px;
+    margin-top: 4px;
+    transition: background 0.2s;
+    width: 100%;
+  }
+  .home-modal__submit:hover { background: var(--gold-lite); }
+  .home-modal__note {
+    font-size: 11px;
+    color: var(--subtle);
+    text-align: center;
+    margin-top: 8px;
+    letter-spacing: 1px;
+  }
+
+  /* ── PHILOSOPHY ── */
+  .home-philosophy {
+    background: var(--dark2);
+    padding: clamp(52px, 8vw, 88px) 40px;
+    border-top: 1px solid rgba(201,168,76,0.1);
+    font-family: 'Montserrat', sans-serif;
+  }
+  .home-philosophy__inner {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .home-section-eye {
+    font-size: 9px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+    font-family: 'Montserrat', sans-serif;
+  }
+  .home-philosophy__title {
+    font-size: clamp(26px, 4vw, 36px);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0px;
+    line-height: 1.1;
+    color: var(--white);
+    margin: 0 0 20px;
+  }
+  .home-philosophy__title span { color: var(--gold); }
+  .home-philosophy__divider {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, rgba(201,168,76,0.5), transparent);
+    margin: 0 auto 32px;
+  }
+  .home-philosophy__text {
+    font-size: 14px;
+    line-height: 1.9;
+    color: var(--muted);
+    font-weight: 300;
+    margin: 0 0 40px;
+  }
+
+  /* ── TRAINER ── */
+  .home-trainer {
+    display: flex;
+    gap: 28px;
+    align-items: flex-start;
+    background: var(--dark3);
+    border: 1px solid rgba(201,168,76,0.15);
+    border-radius: 3px;
+    padding: 28px 28px;
+    text-align: left;
+  }
+  .home-trainer__photo {
+    width: 90px;
+    height: 110px;
+    border-radius: 2px;
+    object-fit: cover;
+    flex-shrink: 0;
+    background: #1a1a1a;
+    border: 1px solid rgba(201,168,76,0.2);
+  }
+  .home-trainer__photo-placeholder {
+    width: 90px;
+    height: 110px;
+    border-radius: 2px;
+    flex-shrink: 0;
+    background: #1a1a1a;
+    border: 1px solid rgba(201,168,76,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255,255,255,0.15);
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .home-trainer__info { flex: 1; }
+  .home-trainer__name {
+    font-size: 15px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--white);
+    margin: 0 0 4px;
+  }
+  .home-trainer__name span { color: var(--gold); }
+  .home-trainer__role {
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--subtle);
+    margin: 0 0 16px;
+  }
+  .home-trainer__gold-line {
+    width: 24px; height: 1px;
+    background: var(--gold);
+    margin-bottom: 14px;
+  }
+  .home-trainer__desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.8;
+    font-weight: 300;
+    margin: 0 0 16px;
+  }
+  .home-trainer__desc strong { color: rgba(255,255,255,0.75); font-weight: 400; }
+  .home-trainer__link {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    text-decoration: none;
+  }
+  .home-trainer__link:hover { color: var(--gold-lite); }
+
+  /* ── MOBILE ── */
+  @media (max-width: 600px) {
+    .home-nav { padding: 18px 20px; }
+    .home-hero__strip { padding: 12px 20px; }
+    .home-trainer { flex-direction: column; }
+    .home-trainer__photo,
+    .home-trainer__photo-placeholder { width: 100%; height: 200px; }
+    .home-philosophy { padding: 48px 20px; }
+  }
+</style>
+
+<!-- Burger menu overlay -->
+<nav class="home-menu" id="homeMenu" aria-label="Навигация">
+  <button class="home-menu__close" onclick="document.getElementById('homeMenu').classList.remove('is-open')" aria-label="Закрыть меню">×</button>
+  {{ range .Site.Menus.main }}
+  <a href="{{ .URL }}">{{ .Name }}</a>
+  {{ end }}
+  <a href="/trainer/">Тренер</a>
+  <a href="/contacts/">Контакты</a>
+</nav>
+
+<!-- Modal: запись на пробную -->
+<div class="home-modal-bg" id="homeModal">
+  <div class="home-modal">
+    <button class="home-modal__close" onclick="document.getElementById('homeModal').classList.remove('is-open')" aria-label="Закрыть">×</button>
+    <div class="home-modal__eyebrow">Первый шаг</div>
+    <div class="home-modal__title">Записаться на пробную</div>
+    <form class="home-modal__form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+      <input class="home-modal__input" type="text" name="name" placeholder="Ваше имя" required>
+      <input class="home-modal__input" type="tel" name="phone" placeholder="Телефон" required>
+      <button class="home-modal__submit" type="submit">Отправить заявку</button>
+    </form>
+    <div class="home-modal__note">или напишите напрямую: <a href="{{ .Site.Params.telegramWrite }}" style="color: var(--gold)">Telegram</a></div>
+  </div>
 </div>
 
-<section class="section section--alt">
-  <div class="container">
-    <div class="section-head">
-      <p class="eyebrow">Полезное</p>
-      <h2>Статьи для тех, кто только начинает</h2>
-          <p class="lead">Что почитать перед первой тренировкой, как выбрать секцию, что нужно знать взрослому новичку — без жаргона и снобизма.</p>
+<!-- HERO -->
+<section class="home-hero">
+  <video class="home-hero__video" autoplay muted loop playsinline poster="/images/hero-grappling-photo.webp">
+    <source src="/video-bg.mp4" type="video/mp4">
+  </video>
+  <div class="home-hero__overlay"></div>
+
+  <nav class="home-nav">
+    <a href="/" class="home-nav__logo">BJJ74</a>
+    <button class="home-nav__burger" onclick="document.getElementById('homeMenu').classList.add('is-open')" aria-label="Открыть меню">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <div class="home-hero__content">
+    <div class="home-hero__eyebrow">Челябинск · Привилегия</div>
+    <div class="home-hero__line"></div>
+    <h1 class="home-hero__title">Грепплинг<br><span>Привилегия</span></h1>
+    <p class="home-hero__sub">No-Gi · Без ударов · Для взрослых 18+</p>
+    <button class="home-hero__cta" onclick="document.getElementById('homeModal').classList.add('is-open')">
+      Записаться на пробную
+    </button>
+  </div>
+
+  <div class="home-scroll-hint">
+    <div class="home-scroll-hint__text">scroll</div>
+    <div class="home-scroll-hint__line"></div>
+  </div>
+
+  <div class="home-hero__strip">
+    <span class="home-hero__strip-loc">{{ .Site.Params.address }}</span>
+    <div class="home-hero__strip-live">
+      <div class="home-hero__strip-live-dot"></div>Live
     </div>
-    <div class="cards">
-      {{- $blog := where .Site.RegularPages "Section" "blog" -}}
-      {{- $beginner := where $blog "Params.rubric" "in" (slice "Советы новичкам" "Понятия и FAQ") -}}
-      {{- $list := first 6 $beginner -}}
-      {{- if lt (len $list) 3 -}}{{- $list = first 6 $blog -}}{{- end -}}
-      {{ range $list }}
-        {{ partial "blog-card.html" (dict "page" .) }}
-      {{ end }}
+    <div class="home-hero__strip-soc">
+      <a href="{{ .Site.Params.telegramWrite }}">TG</a>
+      <a href="{{ .Site.Params.vk }}">VK</a>
     </div>
   </div>
 </section>
+
+<!-- PHILOSOPHY -->
+<section class="home-philosophy">
+  <div class="home-philosophy__inner">
+    <div class="home-section-eye">Наша философия</div>
+    <h2 class="home-philosophy__title">Не подвал.<br>Не для <span>бойцов</span>.</h2>
+    <div class="home-philosophy__divider"></div>
+    <p class="home-philosophy__text">
+      Грепплинг — это борьба без ударов: позиции, контроль, дыхание. Мы создали место, где взрослый человек может начать с нуля — без агрессии, без эго, без страха выглядеть неловко. Умный контактный спорт для тех, кто хочет настоящее, а не тренажёрный зал.
+    </p>
+    <div class="home-trainer">
+      <div class="home-trainer__photo-placeholder">фото</div>
+      <div class="home-trainer__info">
+        <div class="home-trainer__name">Станислав <span>Мамай</span></div>
+        <div class="home-trainer__role">Основатель · Грепплинг Привилегия</div>
+        <div class="home-trainer__gold-line"></div>
+        <p class="home-trainer__desc">
+          <strong>Один из первых тренеров по грепплингу в Челябинске.</strong> Строит тренировочный процесс на грамотной технике и безопасности — без лишней агрессии, без эго. Объясняет сложное простым языком: новички осваиваются быстро, опытные находят новый уровень.
+        </p>
+        <a href="/trainer/" class="home-trainer__link">Подробнее →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Close menu/modal on Escape
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      document.getElementById('homeMenu').classList.remove('is-open');
+      document.getElementById('homeModal').classList.remove('is-open');
+    }
+  });
+  // Close modal on bg click
+  document.getElementById('homeModal').addEventListener('click', function(e) {
+    if (e.target === this) this.classList.remove('is-open');
+  });
+</script>
 {{ end }}
