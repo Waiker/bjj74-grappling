@@ -1,0 +1,48 @@
+name: Build & Deploy to VPS
+
+on:
+  push:
+    branches: [fresh-main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-prod
+  cancel-in-progress: true
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Hugo (extended)
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: '0.163.3'
+          extended: true
+
+      - name: Build site
+        run: hugo --gc --minify
+
+      - name: Deploy to VPS via rsync over SSH
+        env:
+          SSH_KEY:  ${{ secrets.REGRU_SSH_KEY }}
+          HOST:     ${{ secrets.REGRU_HOST }}
+          USER:     ${{ secrets.REGRU_USER }}
+          PORT:     ${{ secrets.REGRU_PORT }}
+          TARGET:   ${{ secrets.REGRU_PATH }}
+        run: |
+          set -euo pipefail
+          mkdir -p ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/id_deploy
+          chmod 600 ~/.ssh/id_deploy
+          ssh-keyscan -p "$PORT" -H "$HOST" >> ~/.ssh/known_hosts 2>/dev/null
+          rsync -avz --delete \
+            --exclude '.well-known/' \
+            --exclude '.htaccess' \
+            -e "ssh -i ~/.ssh/id_deploy -p $PORT -o StrictHostKeyChecking=yes" \
+            public/ \
+            "$USER@$HOST:$TARGET/"
