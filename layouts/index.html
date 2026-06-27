@@ -586,13 +586,15 @@
     <div class="home-info__block">
       <div class="home-info__eye">Расписание</div>
       <div class="home-info__rows">
-        {{ range $p.schedule.days }}
         <div class="home-info__row">
-          <span class="home-info__day">{{ .day }}</span>
-          <span class="home-info__time">{{ .time }}</span>
+          <span class="home-info__day">Четверг</span>
+          <span class="home-info__time">19:30</span>
         </div>
-        {{ end }}
-        <div class="home-info__note">Длительность: {{ $p.schedule.duration }}</div>
+        <div class="home-info__row">
+          <span class="home-info__day">Суббота</span>
+          <span class="home-info__time">13:00</span>
+        </div>
+        <div class="home-info__note">Длительность: 1,5 часа</div>
       </div>
     </div>
     <div class="home-info__divider"></div>
@@ -600,26 +602,18 @@
       <div class="home-info__eye">Стоимость</div>
       <div class="home-info__prices">
         <div class="home-info__price-row">
-          <span class="home-info__price-val">{{ $p.prices.trial }}</span>
-          <span class="home-info__price-note">{{ $p.prices.trial_note }}</span>
+          <span class="home-info__price-val">500 ₽</span>
+          <span class="home-info__price-note">пробное занятие</span>
         </div>
         <div class="home-info__price-row">
-          <span class="home-info__price-val">{{ $p.prices.single }}</span>
-          <span class="home-info__price-note">{{ $p.prices.single_note }}</span>
+          <span class="home-info__price-val">1 000 ₽</span>
+          <span class="home-info__price-note">разовое занятие</span>
         </div>
         <div class="home-info__price-row">
-          <span class="home-info__price-val home-info__price-val--gold">{{ $p.prices.subscription }}</span>
-          <span class="home-info__price-note">{{ $p.prices.subscription_note }}</span>
+          <span class="home-info__price-val home-info__price-val--gold">5 000 ₽</span>
+          <span class="home-info__price-note">абонемент / 8 занятий</span>
         </div>
       </div>
-    </div>
-    <div class="home-info__divider"></div>
-    <div class="home-info__block home-info__block--cta">
-      <div class="home-info__eye">Первый шаг</div>
-      <p class="home-info__cta-text">Первое занятие — со скидкой 50%. Приходите в удобной одежде, остальное объяснит тренер.</p>
-      <button class="home-hero__cta" onclick="document.getElementById('homeModal').classList.add('is-open')">
-        Записаться
-      </button>
     </div>
   </div>
 </section>
