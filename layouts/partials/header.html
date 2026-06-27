@@ -1,11 +1,13 @@
+{{ if not .IsHome }}
 <header class="site-header">
-  <div class="site-header-inner">
-    <a class="brand" href="/">BJJ<span>74</span></a>
-    <nav class="nav" aria-label="Главное меню">
+  <div class="site-header__inner">
+    <a href="/" class="site-header__logo">BJJ74</a>
+    <nav class="site-header__nav" aria-label="Навигация">
       {{ range .Site.Menus.main }}
-        <a href="{{ .URL }}"{{ if $.IsMenuCurrent "main" . }} class="active"{{ end }}>{{ .Name }}</a>
+      <a href="{{ .URL }}" class="site-header__link{{ if $.IsMenuCurrent "main" . }} is-active{{ end }}">{{ .Name }}</a>
       {{ end }}
     </nav>
-    <a class="header-cta" data-goal="header_cta" href="/novichkam/">Тренировки с нуля</a>
+    <a href="/contacts/" class="site-header__cta">Записаться</a>
   </div>
 </header>
+{{ end }}
