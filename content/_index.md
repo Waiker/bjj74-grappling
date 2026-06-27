@@ -26,10 +26,11 @@ trainer:
   link_text: "Подробнее →"
 
 schedule:
-  - day: "Четверг"
-    time: "19:30"
-  - day: "Суббота"
-    time: "13:00"
+  days:
+    - day: "Четверг"
+      time: "19:30"
+    - day: "Суббота"
+      time: "13:00"
   duration: "1,5 часа"
 
 prices:
