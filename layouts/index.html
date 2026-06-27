@@ -400,6 +400,95 @@
   }
   .home-trainer__link:hover { color: var(--gold-lite); }
 
+
+  /* ── SCHEDULE + PRICES BLOCK ── */
+  .home-info {
+    background: #111;
+    border-top: 1px solid rgba(201,168,76,0.12);
+    font-family: 'Montserrat', sans-serif;
+    padding: clamp(40px, 6vw, 64px) 40px;
+  }
+  .home-info__inner {
+    max-width: 900px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr auto 1fr;
+    gap: 0 32px;
+    align-items: start;
+  }
+  .home-info__divider {
+    width: 1px;
+    background: rgba(201,168,76,0.15);
+    align-self: stretch;
+    min-height: 120px;
+  }
+  .home-info__eye {
+    font-size: 9px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+  }
+  .home-info__rows { display: flex; flex-direction: column; gap: 12px; }
+  .home-info__row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+  }
+  .home-info__day {
+    font-size: 15px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 1px;
+  }
+  .home-info__time {
+    font-size: 15px;
+    color: var(--gold);
+    font-weight: 700;
+  }
+  .home-info__note {
+    font-size: 11px;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 1px;
+    margin-top: 8px;
+  }
+  .home-info__prices { display: flex; flex-direction: column; gap: 14px; }
+  .home-info__price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+  }
+  .home-info__price-val {
+    font-size: 18px;
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: 0;
+    white-space: nowrap;
+  }
+  .home-info__price-val--gold { color: var(--gold); }
+  .home-info__price-note {
+    font-size: 11px;
+    color: rgba(255,255,255,0.35);
+    letter-spacing: 1px;
+  }
+  .home-info__block--cta { display: flex; flex-direction: column; gap: 16px; }
+  .home-info__cta-text {
+    font-size: 13px;
+    color: rgba(255,255,255,0.45);
+    line-height: 1.7;
+    font-weight: 300;
+    margin: 0;
+  }
+  @media (max-width: 720px) {
+    .home-info { padding: 40px 20px; }
+    .home-info__inner {
+      grid-template-columns: 1fr;
+      gap: 32px 0;
+    }
+    .home-info__divider { width: 100%; height: 1px; min-height: 0; }
+  }
+
   @media (max-width: 600px) {
     .home-nav { padding: 18px 20px; }
     .home-hero__strip { padding: 12px 20px; }
@@ -487,6 +576,50 @@
         <p class="home-trainer__desc">{{ $t.text }}</p>
         <a href="{{ $t.link }}" class="home-trainer__link">{{ $t.link_text }}</a>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- SCHEDULE + PRICES -->
+<section class="home-info">
+  <div class="home-info__inner">
+    <div class="home-info__block">
+      <div class="home-info__eye">Расписание</div>
+      <div class="home-info__rows">
+        {{ range $p.schedule }}{{ if .day }}
+        <div class="home-info__row">
+          <span class="home-info__day">{{ .day }}</span>
+          <span class="home-info__time">{{ .time }}</span>
+        </div>
+        {{ end }}{{ end }}
+        <div class="home-info__note">Длительность: {{ $p.schedule.duration }}</div>
+      </div>
+    </div>
+    <div class="home-info__divider"></div>
+    <div class="home-info__block">
+      <div class="home-info__eye">Стоимость</div>
+      <div class="home-info__prices">
+        <div class="home-info__price-row">
+          <span class="home-info__price-val">{{ $p.prices.trial }}</span>
+          <span class="home-info__price-note">{{ $p.prices.trial_note }}</span>
+        </div>
+        <div class="home-info__price-row">
+          <span class="home-info__price-val">{{ $p.prices.single }}</span>
+          <span class="home-info__price-note">{{ $p.prices.single_note }}</span>
+        </div>
+        <div class="home-info__price-row">
+          <span class="home-info__price-val home-info__price-val--gold">{{ $p.prices.subscription }}</span>
+          <span class="home-info__price-note">{{ $p.prices.subscription_note }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="home-info__divider"></div>
+    <div class="home-info__block home-info__block--cta">
+      <div class="home-info__eye">Первый шаг</div>
+      <p class="home-info__cta-text">Первое занятие — со скидкой 50%. Приходите в удобной одежде, остальное объяснит тренер.</p>
+      <button class="home-hero__cta" onclick="document.getElementById('homeModal').classList.add('is-open')">
+        Записаться
+      </button>
     </div>
   </div>
 </section>
