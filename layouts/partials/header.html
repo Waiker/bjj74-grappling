@@ -1,0 +1,11 @@
+<header class="site-header">
+  <div class="site-header-inner">
+    <a class="brand" href="/">BJJ<span>74</span></a>
+    <nav class="nav" aria-label="Главное меню">
+      {{ range .Site.Menus.main }}
+        <a href="{{ .URL }}"{{ if $.IsMenuCurrent "main" . }} class="active"{{ end }}>{{ .Name }}</a>
+      {{ end }}
+    </nav>
+    <a class="header-cta" data-goal="header_cta" href="/novichkam/">Тренировки с нуля</a>
+  </div>
+</header>
