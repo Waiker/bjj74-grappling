@@ -1,0 +1,5 @@
+{{- /* note — лёгкий inline callout. */ -}}
+<aside class="note">
+  {{ with .Get "title" }}<strong>{{ . }}</strong>{{ end }}
+  <p>{{ .Inner | markdownify }}</p>
+</aside>
