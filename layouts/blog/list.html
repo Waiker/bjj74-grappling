@@ -1,0 +1,238 @@
+{{ define "main" }}
+<section class="page-title">
+  <div class="page-title-inner">
+    <p class="eyebrow">BJJ74</p>
+    <h1>{{ .Title }}</h1>
+    {{ with .Description }}<p class="lead">{{ . }}</p>{{ end }}
+  </div>
+</section>
+<section class="section">
+  <div class="container">
+
+    {{- /* Канонический порядок рубрик. Пустые скрываются. */ -}}
+    {{- $rubricOrder := slice
+        "Интервью"
+        "Биография"
+        "Лица грэпплинга"
+        "Понятия и FAQ"
+        "Советы новичкам"
+        "Техника и спарринги"
+        "Сравнения"
+        "Лайфстайл и мотивация"
+    -}}
+
+    <div class="blog-filter" data-blog-filter>
+      <div class="filter-row filter-rubrics" role="tablist" aria-label="Рубрики блога">
+        <button type="button" class="filter-chip rubric-chip is-active" data-rubric="" role="tab" aria-selected="true">
+          Все
+          <span class="chip-count">{{ len .Pages }}</span>
+        </button>
+        {{- range $rubric := $rubricOrder -}}
+          {{- $count := 0 -}}
+          {{- range $.Pages -}}
+            {{- if eq (.Params.rubric | default "") $rubric -}}
+              {{- $count = add $count 1 -}}
+            {{- end -}}
+          {{- end -}}
+          {{- if gt $count 0 -}}
+            <button type="button" class="filter-chip rubric-chip" data-rubric="{{ $rubric }}" role="tab" aria-selected="false">
+              {{ $rubric }}
+              <span class="chip-count">{{ $count }}</span>
+            </button>
+          {{- end -}}
+        {{- end -}}
+      </div>
+
+      {{- /* Теги: ручная агрегация (т.к. .Site.Taxonomies пуст из-за disableKinds). */ -}}
+      {{- $tagCounts := dict -}}
+      {{- range .Pages -}}
+        {{- range .Params.tags -}}
+          {{- $tagCounts = merge $tagCounts (dict . (add (index $tagCounts . | default 0) 1)) -}}
+        {{- end -}}
+      {{- end -}}
+      {{- $tagsSorted := slice -}}
+      {{- range $name, $count := $tagCounts -}}
+        {{- $tagsSorted = $tagsSorted | append (dict "name" $name "count" $count) -}}
+      {{- end -}}
+      {{- $tagsSorted = sort $tagsSorted "count" "desc" -}}
+      {{- if $tagsSorted -}}
+        <div class="filter-row filter-tags" aria-label="Теги блога">
+          {{- range $tagsSorted -}}
+            <button type="button" class="filter-chip tag-chip" data-tag="{{ .name }}">
+              {{ .name }}
+              <span class="chip-count">{{ .count }}</span>
+            </button>
+          {{- end -}}
+        </div>
+      {{- end -}}
+
+      <div class="filter-row filter-actions">
+        <button type="button" class="filter-reset" data-filter-reset hidden>Сбросить фильтры</button>
+        <span class="filter-status" data-filter-status aria-live="polite"></span>
+      </div>
+    </div>
+
+    {{- /* Featured-band: первые 2 поста крупнее. */ -}}
+    {{- $featured := first 2 .Pages -}}
+    {{- $rest := after 2 .Pages -}}
+
+    {{- if $featured }}
+    <div class="cards cards-featured" data-blog-cards-featured>
+      {{ range $featured }}
+        {{ partial "blog-card.html" (dict "page" . "featured" true) }}
+      {{ end }}
+    </div>
+    {{- end }}
+
+    {{- if $rest }}
+    <div class="cards" data-blog-cards>
+      {{ range $rest }}
+        {{ partial "blog-card.html" (dict "page" . "featured" false) }}
+      {{ end }}
+    </div>
+    {{- end }}
+
+    <div class="filter-empty" data-filter-empty hidden>
+      <p data-filter-empty-text>По выбранным фильтрам пусто.</p>
+      <button type="button" class="button secondary" data-filter-empty-action hidden>Снять теги</button>
+    </div>
+
+  </div>
+</section>
+
+<script>
+(function () {
+  const root = document.querySelector('[data-blog-filter]');
+  if (!root) return;
+
+  const featuredEl = document.querySelector('[data-blog-cards-featured]');
+  const restEl     = document.querySelector('[data-blog-cards]');
+  const emptyEl    = document.querySelector('[data-filter-empty]');
+  const emptyTxt   = document.querySelector('[data-filter-empty-text]');
+  const emptyAct   = document.querySelector('[data-filter-empty-action]');
+  const resetEl    = document.querySelector('[data-filter-reset]');
+  const statusEl   = document.querySelector('[data-filter-status]');
+
+  const featuredCards = featuredEl ? Array.from(featuredEl.querySelectorAll('.post-card')) : [];
+  const restCards     = restEl ? Array.from(restEl.querySelectorAll('.post-card')) : [];
+  const allCards      = featuredCards.concat(restCards);
+
+  // === Round-robin по рубрикам в .cards (нефичерные) =======================
+  // Группируем по rubric, потом интерлив: первая каждой рубрики, потом вторая…
+  if (restEl && restCards.length > 1) {
+    const groups = new Map();
+    restCards.forEach((c) => {
+      const r = c.dataset.rubric || '';
+      if (!groups.has(r)) groups.set(r, []);
+      groups.get(r).push(c);
+    });
+    const rubricOrder = [
+      'Интервью', 'Биография', 'Понятия и FAQ', 'Советы новичкам',
+      'Техника и спарринги', 'Сравнения', 'Лайфстайл и мотивация', '',
+    ].filter((r) => groups.has(r));
+    const maxLen = Math.max(...Array.from(groups.values(), (a) => a.length));
+    const interleaved = [];
+    for (let i = 0; i < maxLen; i++) {
+      for (const r of rubricOrder) {
+        const arr = groups.get(r);
+        if (i < arr.length) interleaved.push(arr[i]);
+      }
+    }
+    interleaved.forEach((c) => restEl.appendChild(c));
+  }
+
+  // === Фильтрация ==========================================================
+  let activeRubric = '';
+  const activeTags = new Set();
+
+  function applyFilter() {
+    let shown = 0;
+    allCards.forEach((card) => {
+      const r = card.dataset.rubric || '';
+      const t = (card.dataset.tags || '').split(',').filter(Boolean);
+      const rubricOk = !activeRubric || r === activeRubric;
+      const tagsOk   = activeTags.size === 0 || t.some((x) => activeTags.has(x));
+      const visible  = rubricOk && tagsOk;
+      card.hidden = !visible;
+      if (visible) shown++;
+    });
+
+    const isFiltered = !!activeRubric || activeTags.size > 0;
+    resetEl.hidden = !isFiltered;
+    statusEl.textContent = isFiltered ? `Показано ${shown} из ${allCards.length}` : '';
+
+    // Smart empty state
+    if (shown === 0 && isFiltered) {
+      emptyEl.hidden = false;
+      const parts = [];
+      if (activeRubric) parts.push(`«${activeRubric}»`);
+      if (activeTags.size > 0) {
+        const tagList = Array.from(activeTags).map((t) => `«${t}»`).join(', ');
+        parts.push(`по тегам ${tagList}`);
+      }
+      emptyTxt.textContent = `По ${parts.join(' + ')} ничего нет.`;
+      if (activeTags.size > 0) {
+        emptyAct.hidden = false;
+        emptyAct.textContent = activeTags.size === 1 ? 'Снять тег' : `Снять ${activeTags.size} тегов`;
+      } else {
+        emptyAct.hidden = false;
+        emptyAct.textContent = 'Показать все';
+      }
+    } else {
+      emptyEl.hidden = true;
+    }
+  }
+
+  function selectRubric(value) {
+    activeRubric = value || '';
+    root.querySelectorAll('.rubric-chip').forEach((b) => {
+      const isActive = (b.dataset.rubric || '') === activeRubric;
+      b.classList.toggle('is-active', isActive);
+      b.setAttribute('aria-selected', isActive ? 'true' : 'false');
+    });
+    applyFilter();
+  }
+
+  function toggleTag(value, btn) {
+    if (activeTags.has(value)) {
+      activeTags.delete(value);
+      btn.classList.remove('is-active');
+      btn.setAttribute('aria-pressed', 'false');
+    } else {
+      activeTags.add(value);
+      btn.classList.add('is-active');
+      btn.setAttribute('aria-pressed', 'true');
+    }
+    applyFilter();
+  }
+
+  function clearTags() {
+    activeTags.clear();
+    root.querySelectorAll('.tag-chip').forEach((b) => {
+      b.classList.remove('is-active');
+      b.setAttribute('aria-pressed', 'false');
+    });
+  }
+
+  root.querySelectorAll('.rubric-chip').forEach((b) => {
+    b.addEventListener('click', () => selectRubric(b.dataset.rubric || ''));
+  });
+  root.querySelectorAll('.tag-chip').forEach((b) => {
+    b.setAttribute('aria-pressed', 'false');
+    b.addEventListener('click', () => toggleTag(b.dataset.tag, b));
+  });
+  resetEl.addEventListener('click', () => {
+    clearTags();
+    selectRubric('');
+  });
+  emptyAct.addEventListener('click', () => {
+    if (activeTags.size > 0) {
+      clearTags();
+      applyFilter();
+    } else {
+      selectRubric('');
+    }
+  });
+})();
+</script>
+{{ end }}
