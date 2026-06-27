@@ -332,28 +332,37 @@
   }
 
   .home-trainer {
-    display: flex;
-    gap: 28px;
-    align-items: flex-start;
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 0;
+    align-items: stretch;
     background: var(--dark3);
     border: 1px solid rgba(201,168,76,0.15);
     border-radius: 3px;
-    padding: 28px;
+    overflow: hidden;
     text-align: left;
   }
   .home-trainer__photo {
-    width: 90px; height: 110px;
-    border-radius: 2px;
+    width: 100%;
+    height: 100%;
+    min-height: 280px;
+    border-radius: 0;
     object-fit: cover;
+    object-position: center top;
     flex-shrink: 0;
-    border: 1px solid rgba(201,168,76,0.2);
+    border: none;
+    display: block;
+  }
+  .home-trainer__info {
+    padding: 32px 28px;
   }
   .home-trainer__photo-placeholder {
-    width: 90px; height: 110px;
-    border-radius: 2px;
+    width: 100%;
+    min-height: 280px;
+    border-radius: 0;
     flex-shrink: 0;
     background: #1a1a1a;
-    border: 1px solid rgba(201,168,76,0.2);
+    border: none;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -492,9 +501,9 @@
   @media (max-width: 600px) {
     .home-nav { padding: 18px 20px; }
     .home-hero__strip { padding: 12px 20px; }
-    .home-trainer { flex-direction: column; }
+    .home-trainer { grid-template-columns: 1fr; }
     .home-trainer__photo,
-    .home-trainer__photo-placeholder { width: 100%; height: 180px; }
+    .home-trainer__photo-placeholder { min-height: 260px; }
     .home-philosophy { padding: 48px 20px; }
   }
 </style>
