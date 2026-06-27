@@ -1,0 +1,49 @@
+# secrets / credentials (never commit)
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+id_rsa*
+*.kubeconfig
+kubeconfig
+credentials.json
+secrets.yaml
+secrets.yml
+.secrets/
+# agent local runtime state
+.claude/
+.codex/
+# dependencies / build / caches
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+venv/
+dist/
+build/
+.cache/
+# logs / local databases / os
+*.log
+*.sqlite
+*.sqlite3
+.DS_Store
+
+# Hugo build output
+public/
+resources/_gen/
+.hugo_build.lock
+
+# pipeline working data (audio/video/transcripts) — reproducible, do not commit
+_pipeline
+_pipeline/
+_pipeline_localframes_backup/
+# downloads / temp
+*.wav
+*.mp4
+*.m4a
+*.webm
+# scratch / editor / test output (not site source)
+output/
+.playwright-cli/
+.obsidian/
