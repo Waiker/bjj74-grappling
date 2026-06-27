@@ -1105,3 +1105,98 @@ body:not(:has(.home-hero)) .line { background: rgba(255,255,255,0.08); }
   .site-footer__bottom { flex-direction: column; gap: 8px; text-align: center; }
 }
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700;900&display=swap');
+
+
+/* ═══════════════════════════════════════════
+   ARTICLE — без сайдбара
+═══════════════════════════════════════════ */
+.article {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: clamp(40px, 6vw, 72px) clamp(18px, 4vw, 32px);
+}
+.article-head { margin-bottom: 40px; }
+.article-body { }
+.article-grid { display: block; }
+
+/* ═══════════════════════════════════════════
+   CTA BLOCK — контакты в конце страницы
+═══════════════════════════════════════════ */
+.cta-block {
+  margin: 48px 0 0;
+  padding: 28px 32px;
+  border: 1px solid rgba(201,168,76,0.2);
+  border-left: 3px solid #C9A84C;
+  border-radius: 3px;
+  background: #111;
+}
+.cta-block__title {
+  display: block;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #C9A84C;
+  margin-bottom: 10px;
+}
+.cta-block__text {
+  font-size: 14px;
+  color: rgba(255,255,255,0.6);
+  margin: 0;
+  line-height: 1.7;
+}
+.cta-block__text a { color: #C9A84C; }
+.cta-block__text a:hover { color: #e0bc5e; }
+
+/* ═══════════════════════════════════════════
+   КНОПКИ — фикс белого на белом
+═══════════════════════════════════════════ */
+.button {
+  display: inline-block;
+  font-family: 'Montserrat', 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 13px 28px;
+  border-radius: 2px;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
+  background: #C9A84C;
+  color: #000 !important;
+  border: none;
+  cursor: pointer;
+}
+.button:hover { background: #e0bc5e; color: #000 !important; }
+.button.secondary {
+  background: transparent;
+  color: rgba(255,255,255,0.7) !important;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+.button.secondary:hover {
+  border-color: #C9A84C;
+  color: #C9A84C !important;
+}
+.button.accent {
+  background: #C9A84C;
+  color: #000 !important;
+}
+.button.accent:hover { background: #e0bc5e; }
+
+/* ═══════════════════════════════════════════
+   PAGE HERO — для внутренних страниц
+═══════════════════════════════════════════ */
+.page-hero {
+  border-bottom: 1px solid rgba(201,168,76,0.1);
+  padding: 48px clamp(18px,4vw,40px) 40px;
+  background: #0a0a0a;
+}
+.page-hero__inner { max-width: 760px; margin: 0 auto; }
+
+/* ═══════════════════════════════════════════
+   ASIDE CARDS — убираем старые
+═══════════════════════════════════════════ */
+.aside-card { display: none; }
+.article-aside { display: none; }
+.course-banner { display: none; }
