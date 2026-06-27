@@ -1,0 +1,16 @@
+{{- $i1Title := .Get "i1Title" | default "Для новичков" -}}
+{{- $i1Sub   := .Get "i1Sub"   | default "Можно без опыта и формы спортсмена" -}}
+{{- $i2Title := .Get "i2Title" | default "Для женщин" -}}
+{{- $i2Sub   := .Get "i2Sub"   | default "Без ударов, мягкий вход, отдельная группа" -}}
+{{- $i3Title := .Get "i3Title" | default "Для мужчин" -}}
+{{- $i3Sub   := .Get "i3Sub"   | default "Контроль, техника и нагрузка без эго" -}}
+{{- $i4Title := .Get "i4Title" | default "После офиса" -}}
+{{- $i4Sub   := .Get "i4Sub"   | default "Вечерние и субботние слоты рядом с домом" -}}
+<section class="fact-grid-section">
+  <div class="fact-grid">
+    <div><strong>{{ $i1Title }}</strong><span>{{ $i1Sub }}</span></div>
+    <div><strong>{{ $i2Title }}</strong><span>{{ $i2Sub }}</span></div>
+    <div><strong>{{ $i3Title }}</strong><span>{{ $i3Sub }}</span></div>
+    <div><strong>{{ $i4Title }}</strong><span>{{ $i4Sub }}</span></div>
+  </div>
+</section>

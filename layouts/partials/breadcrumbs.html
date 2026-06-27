@@ -1,0 +1,14 @@
+{{- /* BreadcrumbList JSON-LD (SEO). Skipped on the home page. */ -}}
+{{- if not .IsHome -}}
+  {{- $items := slice (dict "name" "Главная" "url" .Site.Home.Permalink) -}}
+  {{- if and (eq .Section "blog") (ne .RelPermalink "/blog/") -}}
+    {{- $items = $items | append (dict "name" "Блог" "url" (printf "%sblog/" .Site.Home.Permalink)) -}}
+  {{- end -}}
+  {{- $items = $items | append (dict "name" .Title "url" .Permalink) -}}
+  {{- $els := slice -}}
+  {{- range $i, $e := $items -}}
+    {{- $els = $els | append (dict "@type" "ListItem" "position" (add $i 1) "name" $e.name "item" $e.url) -}}
+  {{- end -}}
+  {{- $obj := dict "@context" "https://schema.org" "@type" "BreadcrumbList" "itemListElement" $els -}}
+<script type="application/ld+json">{{ $obj | jsonify | safeJS }}</script>
+{{- end -}}

@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0c0a09">
+
+  <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} — {{ .Site.Title }}{{ end }}</title>
+  <meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ .Summary | plainify }}{{ end }}">
+
+  <link rel="icon" href="/favicon.ico">
+  <link rel="canonical" href="{{ .Permalink }}">
+  {{ with .Site.Params.googleVerification }}<meta name="google-site-verification" content="{{ . }}">{{ end }}
+  {{ with .Site.Params.yandexVerification }}<meta name="yandex-verification" content="{{ . }}">{{ end }}
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Inter+Tight:wght@700;800;900&display=swap">
+
+  {{ $style := resources.Get "css/main.css" | minify | fingerprint }}
+  <link rel="stylesheet" href="{{ $style.RelPermalink }}" integrity="{{ $style.Data.Integrity }}">
+
+  <meta property="og:type" content="{{ if .IsPage }}article{{ else }}website{{ end }}">
+  <meta property="og:title" content="{{ .Title }}">
+  <meta property="og:description" content="{{ with .Description }}{{ . }}{{ else }}{{ .Summary | plainify }}{{ end }}">
+  <meta property="og:url" content="{{ .Permalink }}">
+  <meta property="og:site_name" content="{{ .Site.Title }}">
+  <meta property="og:locale" content="ru_RU">
+  <meta name="twitter:card" content="summary_large_image">
+  {{ $ogImage := .Params.cover | default "/images/og-default.jpg" }}
+  <meta property="og:image" content="{{ $ogImage | absURL }}">
+  {{ if not .Params.cover }}<meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">{{ end }}
+  <meta property="og:image:alt" content="{{ .Params.coverAlt | default .Site.Title }}">
+  <meta name="twitter:image" content="{{ $ogImage | absURL }}">
+
+  {{ partial "breadcrumbs.html" . }}
+  {{ partial "schema.html" . }}
+  {{ partial "analytics.html" . }}
+</head>
+<body>
+  {{ partial "header.html" . }}
+  <main id="main">
+    {{ block "main" . }}{{ end }}
+  </main>
+  {{ partial "footer.html" . }}
+</body>
+</html>

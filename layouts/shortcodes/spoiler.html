@@ -1,0 +1,5 @@
+{{- /* spoiler — складной вопрос-ответ (FAQ). {{< spoiler q="Вопрос?" >}}Ответ…{{< /spoiler >}} */ -}}
+<details class="faq-item">
+  <summary>{{ .Get "q" }}</summary>
+  <div class="faq-answer">{{ .Inner | markdownify }}</div>
+</details>

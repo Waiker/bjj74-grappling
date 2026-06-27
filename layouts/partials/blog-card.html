@@ -1,0 +1,32 @@
+{{- /* Карточка поста для ленты блога и блока «Читайте также».
+       Принимает: { "page": <Page>, "featured": bool } */ -}}
+{{- $p := .page -}}
+{{- $featured := .featured -}}
+<a class="post-card{{ with $p.Params.cover }} has-image{{ end }}{{ if $featured }} featured{{ end }}"
+   href="{{ $p.RelPermalink }}"
+   data-rubric="{{ $p.Params.rubric | default "" }}"
+   data-tags="{{ delimit ($p.Params.tags | default slice) "," }}">
+  {{ with $p.Params.cover }}
+    <img class="post-card-image" src="{{ . }}" alt="{{ $p.Params.coverAlt | default $p.Title }}" loading="lazy" decoding="async">
+  {{ end }}
+  <div class="post-card-body">
+    {{ with $p.Params.rubric }}
+      <span class="post-tag">{{ . }}</span>
+    {{ else }}
+      {{ with $p.Params.tags }}<span class="post-tag">{{ index . 0 }}</span>{{ else }}<span class="post-tag">BJJ74</span>{{ end }}
+    {{ end }}
+    <h3>{{ $p.Title }}</h3>
+    <p>{{ $p.Description }}</p>
+    <div class="post-meta">
+      {{- $bits := slice -}}
+      {{- if not $p.Date.IsZero -}}
+        {{- $bits = $bits | append (partial "russian-date.html" $p.Date) -}}
+      {{- end -}}
+      {{- $rt := $p.ReadingTime -}}
+      {{- if gt $rt 0 -}}
+        {{- $bits = $bits | append (printf "%d мин" $rt) -}}
+      {{- end -}}
+      {{- delimit $bits " · " -}}
+    </div>
+  </div>
+</a>

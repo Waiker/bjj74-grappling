@@ -1,0 +1,6 @@
+{{- /* cta — тёмный inline-блок призыва. {{< cta title="…" >}}…{{< /cta >}} */ -}}
+<aside class="cta">
+  {{ with .Get "title" }}<strong>{{ . }}</strong>{{ end }}
+  {{ with .Inner }}<p>{{ . | markdownify }}</p>{{ end }}
+  <a class="button" data-goal="cta_signup" href="{{ .Get "href" | default "/contacts/" }}">{{ .Get "buttonText" | default "Записаться" }}</a>
+</aside>

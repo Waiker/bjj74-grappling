@@ -1,0 +1,7 @@
+{{- $src := .Get "src" -}}
+{{- $alt := .Get "alt" | default "" -}}
+{{- $caption := .Get "caption" -}}
+<figure class="figure">
+  <img src="{{ $src }}" alt="{{ $alt }}" loading="{{ .Get "loading" | default "eager" }}" decoding="async">
+  {{ with $caption }}<figcaption>{{ . }}</figcaption>{{ end }}
+</figure>

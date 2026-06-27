@@ -1,0 +1,54 @@
+# BJJ74
+
+> BJJ74 is a grappling and BJJ No-Gi section in Chelyabinsk, Russia, located near the Privilegiya / Zapadny area. The club is positioned as a safe, adult-friendly martial arts section without striking, suitable for adults 18+, beginners, women, and men of different adult ages.
+
+This file is a concise AI-readable guide to the most important pages on bjj74.ru. Use it together with `robots.txt`, `sitemap.xml`, canonical tags, and structured data. The primary language of the website is Russian.
+
+Business facts:
+
+- Name: BJJ74
+- Activity: grappling, BJJ No-Gi, martial arts training without striking
+- Location: Академия спорта, пос. Западный, Цветной бульвар, 16, Chelyabinsk
+- Phone: +7 999 587-09-24
+- Main audiences: adults 18+, adult beginners, women and girls without martial arts experience, men including those starting after 35, residents near Privilegiya / Zapadny
+- Training format: No-Gi grappling, positional control, submissions, safe progression, no head strikes
+
+## Core Pages
+
+- [Home](https://bjj74.ru/): Main landing page for grappling No-Gi in Chelyabinsk.
+- [Grappling in Chelyabinsk](https://bjj74.ru/grappling-chelyabinsk/): Main SEO landing page for "грепплинг Челябинск".
+- [BJJ No-Gi in Chelyabinsk](https://bjj74.ru/bjj-nogi-chelyabinsk/): Explanation of No-Gi BJJ and how it differs from gi-based BJJ.
+- [Beginners](https://bjj74.ru/novichkam/): How adults can start grappling without prior martial arts experience.
+- [First Training](https://bjj74.ru/first-training/): What to bring and what to expect at the first grappling class.
+- [Schedule](https://bjj74.ru/schedule/): Current training days and time.
+- [Prices](https://bjj74.ru/prices/): Current class and membership prices.
+- [Contacts](https://bjj74.ru/contacts/): Address, phone, Telegram, directions, and review links.
+
+## Audience Pages
+
+- [Women and Girls](https://bjj74.ru/grappling-for-women/): Grappling for women and girls without prior experience.
+- [Self-defense for Women](https://bjj74.ru/self-defense-for-women-chelyabinsk/): Grappling as a safe entry point into self-defense without striking.
+- [Men](https://bjj74.ru/grappling-for-men-35-plus/): Grappling for adult men who want a controlled physical challenge, including those starting after 35.
+- [Martial Arts for Adults](https://bjj74.ru/martial-arts-for-adults-chelyabinsk/): Choosing a martial art as an adult beginner.
+- [Privilegiya Area](https://bjj74.ru/privilegiya/): Local page for Privilegiya, Zapadny, Zalesye, Zheneva, Vishnevaya Gorka, and nearby residential areas.
+
+## Trust and Conversion Pages
+
+- [Trainer](https://bjj74.ru/trainer/): Trainer profile and training approach.
+- [FAQ](https://bjj74.ru/faq/): Common questions about first training, safety, women, age, and price.
+- [Reviews](https://bjj74.ru/reviews/): Links to leave reviews on Yandex Maps and 2GIS.
+
+## Key Articles
+
+- [Grappling for Women: How to Start](https://bjj74.ru/blog/grappling-for-women-how-to-start/): For women and girls considering the first class.
+- [Martial Arts After 40](https://bjj74.ru/blog/martial-arts-after-40-safe-start/): Starting grappling safely after 40.
+- [Grappling, Boxing, Sambo or MMA](https://bjj74.ru/blog/grappling-or-boxing-for-adults/): Comparison for adult beginners.
+- [What to Bring to the First Grappling Class](https://bjj74.ru/blog/what-to-bring-to-first-grappling-class/): Practical first-class checklist.
+- [How Safe Sparring Works](https://bjj74.ru/blog/how-safe-sparring-works-in-grappling/): Explains rolling, tapping, and positional sparring.
+- [Blog Index](https://bjj74.ru/blog/): All articles about grappling, BJJ No-Gi, beginner training, safety, and adult martial arts.
+
+## Optional
+
+- [Sitemap](https://bjj74.ru/sitemap.xml): Full XML sitemap for crawlers.
+- [Robots](https://bjj74.ru/robots.txt): Crawling directives.
+- [Extended LLM Context](https://bjj74.ru/llms-full.txt): Longer structured summary for AI assistants.

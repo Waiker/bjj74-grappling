@@ -1,0 +1,32 @@
+{{- $image := .Get "image" | default "/images/hero-grappling-adults-18.webp" -}}
+{{- $eyebrow := .Get "eyebrow" | default "Челябинск / мкрн. Привилегия" -}}
+{{- $title := .Get "title" | default "Грепплинг No&#8209;Gi.<br>Без ударов. Для взрослых." -}}
+{{- $lead := .Get "lead" | default "Умный контактный фитнес 18+: контроль, техника, сила корпуса и спокойная уверенность на ковре. Для новичков, женщин и мужчин любого взрослого возраста." -}}
+{{- $cta1Text := .Get "cta1Text" | default "Записаться на пробную" -}}
+{{- $cta1Href := .Get "cta1Href" | default "/contacts/" -}}
+{{- $cta2Text := .Get "cta2Text" | default "Тренировки для новичков" -}}
+{{- $cta2Href := .Get "cta2Href" | default "/novichkam/" -}}
+{{- $stat1Title := .Get "stat1Title" | default "0 ударов в голову" -}}
+{{- $stat1Sub := .Get "stat1Sub" | default "борьба, контроль, сабмишены — без лицевых травм" -}}
+{{- $stat2Title := .Get "stat2Title" | default "Старт в любой момент" -}}
+{{- $stat2Sub := .Get "stat2Sub" | default "группы, подходящие взрослым новичкам с нуля" -}}
+{{- $stat3Title := .Get "stat3Title" | default "Привилегия" -}}
+{{- $stat3Sub := .Get "stat3Sub" | default "Цветной бульвар, 16 — Академия спорта" -}}
+<section class="hero" style="background-image: url('{{ $image }}');">
+  <div class="hero-inner">
+    <div class="hero-copy">
+      <p class="eyebrow">{{ $eyebrow }}</p>
+      <h1>{{ $title | safeHTML }}</h1>
+      <p class="lead">{{ $lead }}</p>
+      <div class="hero-actions">
+        <a class="button" href="{{ $cta2Href }}">{{ $cta2Text }}</a>
+        <a class="button secondary" href="{{ $cta1Href }}">{{ $cta1Text }}</a>
+      </div>
+    </div>
+    <div class="hero-panel">
+      <div class="stat"><strong>{{ $stat1Title }}</strong><span>{{ $stat1Sub }}</span></div>
+      <div class="stat"><strong>{{ $stat2Title }}</strong><span>{{ $stat2Sub }}</span></div>
+      <div class="stat"><strong>{{ $stat3Title }}</strong><span>{{ $stat3Sub }}</span></div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,52 @@
+baseURL: "https://bjj74.ru/"
+buildFuture: true
+locale: "ru-ru"
+title: "BJJ74 | Грепплинг No-Gi в Челябинске"
+enableRobotsTXT: true
+summaryLength: 28
+disableKinds: ["taxonomy", "term"]
+pagination:
+  pagerSize: 9
+permalinks:
+  blog: "/blog/:slug/"
+  pages: "/:slug/"
+taxonomies:
+  category: "categories"
+  tag: "tags"
+params:
+  googleVerification: "wvKHVeYYXpgiKslOpX7WDUWIEKg-3rrjvvyhSYhRZjw"
+  phone: "+7 999 587-09-24"
+  telegram: "https://t.me/bjj74ru"
+  telegramWrite: "https://t.me/tym83"
+  vk: "https://vk.com/bjj74ru"
+  address: "Академия спорта, пос. Западный, Цветной бульвар, 16"
+  city: "Челябинск"
+  geo:
+    latitude: "55.110234"
+    longitude: "61.255940"
+  reviews:
+    yandex: "https://yandex.ru/maps/org/bjj_no_gi/96975595323/?ll=61.255940%2C55.110234&z=17"
+    twoGis: "https://2gis.ru/chelyabinsk/firm/70000001104200642/tab/info"
+menu:
+  main:
+    - name: "Новичкам"
+      pageRef: "/novichkam"
+      weight: 5
+    - name: "Грепплинг"
+      pageRef: "/grappling-chelyabinsk"
+      weight: 10
+    - name: "Женщинам"
+      pageRef: "/grappling-for-women"
+      weight: 20
+    - name: "Мужчинам"
+      pageRef: "/grappling-for-men-35-plus"
+      weight: 30
+    - name: "Расписание"
+      pageRef: "/schedule"
+      weight: 40
+    - name: "Цены"
+      pageRef: "/prices"
+      weight: 50
+    - name: "Блог"
+      pageRef: "/blog"
+      weight: 60

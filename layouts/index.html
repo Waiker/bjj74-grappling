@@ -1,0 +1,24 @@
+{{ define "main" }}
+<div class="home-content">
+  {{ .Content }}
+</div>
+
+<section class="section section--alt">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Полезное</p>
+      <h2>Статьи для тех, кто только начинает</h2>
+          <p class="lead">Что почитать перед первой тренировкой, как выбрать секцию, что нужно знать взрослому новичку — без жаргона и снобизма.</p>
+    </div>
+    <div class="cards">
+      {{- $blog := where .Site.RegularPages "Section" "blog" -}}
+      {{- $beginner := where $blog "Params.rubric" "in" (slice "Советы новичкам" "Понятия и FAQ") -}}
+      {{- $list := first 6 $beginner -}}
+      {{- if lt (len $list) 3 -}}{{- $list = first 6 $blog -}}{{- end -}}
+      {{ range $list }}
+        {{ partial "blog-card.html" (dict "page" .) }}
+      {{ end }}
+    </div>
+  </div>
+</section>
+{{ end }}
