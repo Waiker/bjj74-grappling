@@ -203,7 +203,13 @@
     border-top: 1px solid rgba(201,168,76,0.12);
     font-family: 'Montserrat', sans-serif;
   }
-  .home-hero__strip-loc,
+  .home-hero__strip-loc {
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.85);
+    font-weight: 400;
+  }
   .home-hero__strip-soc a {
     font-size: 10px;
     letter-spacing: 2px;
@@ -214,46 +220,7 @@
   }
   .home-hero__strip-soc { display: flex; gap: 20px; }
   .home-hero__strip-soc a:hover { color: var(--gold); }
-  .home-hero__strip-live {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    font-size: 10px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--subtle);
-    font-family: 'Montserrat', sans-serif;
-  }
-  .home-hero__strip-live-dot {
-    width: 5px; height: 5px;
-    border-radius: 50%;
-    background: var(--gold);
-  }
 
-  /* Scroll hint */
-  .home-scroll-hint {
-    position: absolute;
-    bottom: 56px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    z-index: 10;
-  }
-  .home-scroll-hint__text {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 9px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: rgba(201,168,76,0.4);
-  }
-  .home-scroll-hint__line {
-    width: 1px;
-    height: 28px;
-    background: linear-gradient(to bottom, rgba(201,168,76,0.5), transparent);
-  }
 
   /* ── MODAL ── */
   .home-modal-bg {
@@ -526,16 +493,8 @@
     </button>
   </div>
 
-  <div class="home-scroll-hint">
-    <div class="home-scroll-hint__text">scroll</div>
-    <div class="home-scroll-hint__line"></div>
-  </div>
-
   <div class="home-hero__strip">
     <span class="home-hero__strip-loc">{{ .Site.Params.address }}</span>
-    <div class="home-hero__strip-live">
-      <div class="home-hero__strip-live-dot"></div>Live
-    </div>
     <div class="home-hero__strip-soc">
       <a href="{{ .Site.Params.telegramWrite }}">TG</a>
       <a href="{{ .Site.Params.vk }}">VK</a>
