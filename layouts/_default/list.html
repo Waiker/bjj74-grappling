@@ -1,0 +1,30 @@
+{{ define "main" }}
+<section class="page-title">
+  <div class="page-title-inner">
+    <p class="eyebrow">BJJ74</p>
+    <h1>{{ .Title }}</h1>
+    {{ with .Description }}<p class="lead">{{ . }}</p>{{ end }}
+  </div>
+</section>
+<section class="section">
+  <div class="container">
+    <div class="cards">
+      {{ range .Pages }}
+        {{ $page := . }}
+        {{ $months := dict "1" "января" "2" "февраля" "3" "марта" "4" "апреля" "5" "мая" "6" "июня" "7" "июля" "8" "августа" "9" "сентября" "10" "октября" "11" "ноября" "12" "декабря" }}
+        <a class="post-card{{ with .Params.cover }} has-image{{ end }}" href="{{ .RelPermalink }}">
+          {{ with .Params.cover }}
+            <img class="post-card-image" src="{{ . }}" alt="{{ $page.Params.coverAlt | default $page.Title }}" loading="lazy" decoding="async">
+          {{ end }}
+          <div class="post-card-body">
+            {{ with .Params.tags }}<span class="post-tag">{{ index . 0 }}</span>{{ else }}<span class="post-tag">BJJ74</span>{{ end }}
+            <h3>{{ .Title }}</h3>
+            <p>{{ .Description }}</p>
+            {{ if not .Date.IsZero }}<div class="post-meta">{{ .Date.Day }} {{ index $months (printf "%d" .Date.Month) }} {{ .Date.Year }}</div>{{ end }}
+          </div>
+        </a>
+      {{ end }}
+    </div>
+  </div>
+</section>
+{{ end }}
