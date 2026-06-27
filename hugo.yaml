@@ -29,24 +29,15 @@ params:
     twoGis: "https://2gis.ru/chelyabinsk/firm/70000001104200642/tab/info"
 menu:
   main:
-    - name: "Новичкам"
-      pageRef: "/novichkam"
+    - name: "Тренировки"
+      url: "/novichkam/"
       weight: 5
-    - name: "Грепплинг"
-      pageRef: "/grappling-chelyabinsk"
+    - name: "Расписание и цены"
+      url: "/schedule/"
       weight: 10
-    - name: "Женщинам"
-      pageRef: "/grappling-for-women"
-      weight: 20
-    - name: "Мужчинам"
-      pageRef: "/grappling-for-men-35-plus"
-      weight: 30
-    - name: "Расписание"
-      pageRef: "/schedule"
-      weight: 40
-    - name: "Цены"
-      pageRef: "/prices"
-      weight: 50
     - name: "Блог"
-      pageRef: "/blog"
-      weight: 60
+      url: "/blog/"
+      weight: 20
+    - name: "Контакты"
+      url: "/contacts/"
+      weight: 30
