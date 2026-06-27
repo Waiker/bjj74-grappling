@@ -586,12 +586,12 @@
     <div class="home-info__block">
       <div class="home-info__eye">Расписание</div>
       <div class="home-info__rows">
-        {{ range $p.schedule }}{{ if .day }}
+        {{ range $p.schedule.days }}
         <div class="home-info__row">
           <span class="home-info__day">{{ .day }}</span>
           <span class="home-info__time">{{ .time }}</span>
         </div>
-        {{ end }}{{ end }}
+        {{ end }}
         <div class="home-info__note">Длительность: {{ $p.schedule.duration }}</div>
       </div>
     </div>
