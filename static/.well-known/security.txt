@@ -1,0 +1,3 @@
+Contact: https://bjj74.ru/contacts/
+Preferred-Languages: ru
+Canonical: https://bjj74.ru/.well-known/security.txt
